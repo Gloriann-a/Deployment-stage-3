@@ -1,4 +1,4 @@
-Perfect, Gloria 💪🏽 this is a solid foundation — it clearly reflects your Stage 2 setup.
+
 
 
 
