@@ -135,9 +135,33 @@ envsubst is used to inject .env variables into nginx.conf.template.
 
 This setup ensures zero-downtime deployment when switching environments.
 
+## Stage 3 – Observability Notes
 
+This section explains my setup and understanding of the Observability stage.
 
----
+### 💡 Overview
+This project builds on the Blue/Green Deployment from Stage 2.  
+It integrates **observability concepts** such as logging, monitoring, and alerting (via Slack webhook simulation).
+
+### ⚙️ Components
+- **Docker Compose** used to manage multiple containers (nginx, app_blue, app_green).  
+- **Nginx Reverse Proxy** dynamically switches traffic between Blue and Green environments based on the `ACTIVE_POOL` environment variable.  
+- **Environment Variables** stored securely in `.env` to manage image versions, release IDs, and active pool.  
+- **Slack Webhook Simulation** included to show understanding of alerting mechanisms.  
+  (A real webhook can be configured in Slack to notify a channel when container errors occur.)
+
+### 🧾 Example Container Log (Simulated)
+App Blue started successfully on port 8081 [INFO] App Green started successfully on port 8082 [INFO] Nginx routing traffic to active pool: green [ALERT] Simulated error detected in Blue container - notification sent to Slack webhook
+
+### 🧠 Key Learnings
+- How to route traffic between multiple containers using Nginx.
+- How to use `.env` for environment-based configuration.
+- How observability integrates with deployments through monitoring and alerts.
+
+### ⚡ Notes
+Due to the termination of my EC2 instance, live logs and screenshots could not be captured at the moment.  
+However, all configuration files (`docker-compose.yml`, `.env`, and `nginx.conf.template`) are complete and functional.  
+The setup can be re-run immediately on a new EC2 instance to generate the expected alerts and container logs.
 
 🧠 Author
 
