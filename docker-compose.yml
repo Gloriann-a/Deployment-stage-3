@@ -1,0 +1,51 @@
+services:
+  nginx:
+    image: nginx:1.29-alpine
+    container_name: nginx
+    env_file: .env
+    environment:
+      - ACTIVE_POOL=${ACTIVE_POOL}
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/templates/nginx.conf.template
+      - ./nginx-logs:/var/log/nginx      # Shared volume for logs
+    ports:
+      - "8080:80"
+    depends_on:
+      - app_blue
+      - app_green
+
+  app_blue:
+    image: ${BLUE_IMAGE}
+    container_name: app_blue
+    environment:
+      - APP_POOL=blue
+      - RELEASE_ID=${RELEASE_ID_BLUE}
+    ports:
+      - "8081:3000"
+
+  app_green:
+    image: ${GREEN_IMAGE}
+    container_name: app_green
+    environment:
+      - APP_POOL=green
+      - RELEASE_ID=${RELEASE_ID_GREEN}
+    ports:
+      - "8082:3000"
+
+  alert_watcher:
+    build: ./watcher
+    container_name: alert_watcher
+    env_file: .env
+    environment:
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - ERROR_RATE_THRESHOLD=${ERROR_RATE_THRESHOLD}
+      - WINDOW_SIZE=${WINDOW_SIZE}
+      - ALERT_COOLDOWN_SEC=${ALERT_COOLDOWN_SEC}
+      - MAINTENANCE_MODE=${MAINTENANCE_MODE}
+      - LOG_PATH=${LOG_PATH}
+    volumes:
+      - ./nginx-logs:/var/log/nginx    # Mount same logs Nginx writes to
+    depends_on:
+      - nginx
+
+  
