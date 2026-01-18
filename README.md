@@ -165,9 +165,9 @@ The setup can be re-run immediately on a new EC2 instance to generate the expect
 
 🧠 Author
 
-Gloria [Your Last Name]
+Gloria Njoku
 HNG Devops Intern 13– Stage 3 Project
-“Building with confidence and excellence.”
+
 
 
 
